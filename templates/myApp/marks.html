@@ -1,0 +1,107 @@
+{% extends 'basic.html' %}
+{% load extras %}
+{% load static %}
+
+{% block title %} Marks {% endblock title %}
+
+{% block style %}
+    .profileImage {
+        float: right;
+        width: 27mm;
+        margin-top: -29mm;
+        margin-right: 4mm;
+    }
+
+    .info {
+        width: 70rem;
+        border-style: solid;
+        border-color:black;
+        border-radius: 10px;
+        padding-top: 1vh;
+        padding-bottom: 1vh;
+        padding-left: 1vw;
+        margin-top: 1vh;
+        margin-left: 10px;
+        margin-bottom: 1vh;
+        background-color: lightblue;
+    }
+
+    table {
+        width: 98%;
+        margin-left: 11px;
+    } 
+
+    table, th, td {
+        border: 2px solid black;
+        border-collapse: collapse;
+        margin-bottom: 1vh;         
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+    }
+
+    tr {
+        background-color: #eee;
+    }
+
+    th {
+        background-color:rgb(253, 114, 63);
+        color: white;
+        width: 14.28%
+    }
+{% endblock style %}
+
+{% block body %}
+
+    <div class="info">
+        {% for students in student %}
+            <div style="display: inline-block; margin-top: 11px; margin-left: 11px;">
+                <p> Name : {{ students.user.get_full_name }} </p>
+                <p> Enrollment No. : {{ students.user.username }} </p>
+            </div>
+            <div style="display: inline-block; margin-left: 150px">
+                <p> Branch : {{ students.branch }} </p>
+                <p> Batch : {{ students.batch }} </p> 
+            </div> 
+        {% endfor %}
+    </div>
+
+    <img class="profileImage" src="{% static 'myApp/profile_image.png' %}">
+
+    {% for key, val in marks.items %}      
+        {% if val|length != 0 %}  
+        <table>
+            <tr>
+                <th> {{ key }} </th>
+                {% for subject in val|get_keys %}
+                    <th> {{ subject }} </th>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                <td style="background-color: rgb(252, 220, 252);">Mid Term</td>
+                {% for mid in val|get_mid %}
+                    <td> {{ mid }} </td>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                <td style="background-color: rgb(252, 220, 252);">End Term</td>
+                {% for end in val|get_end %}
+                    <td> {{ end }} </td>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                <td style="background-color: rgb(252, 220, 252);">Practical</td>
+                {% for practical in val|get_practical %}
+                    <td> {{ practical }} </td>
+                {% endfor %}
+            </tr>
+        </table>
+        {% endif %}
+    {% endfor %}
+        
+{% endblock body %}

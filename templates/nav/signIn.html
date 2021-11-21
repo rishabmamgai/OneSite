@@ -1,0 +1,103 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>BVCOE</title>
+    <link rel="icon" type="image/png" href={% static 'personal_nav/Favicon.png' %}>
+
+    <style>
+        .flex-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .div {
+            border: 10px solid rgb(240, 66, 2);
+            border-radius: 10px;
+            background-color: rgba(226, 226, 226, 0);
+            height: 61vh;
+            width: 30vw;
+            margin-top: 17vh;
+            margin-right: 10vw;
+        }
+        form {
+            padding-left: 1.7vw;
+        }
+        input {
+            border-radius: 5px;
+            width: 25vw;
+            height: 6vh;
+            border-color: rgb(197, 184, 184);
+        }
+        .login {
+            background-color: #199600; 
+            color: white; 
+            font-size: 1.2rem;
+            width: 20vw;
+            border-radius: 5px; 
+            margin-top: 2vh;
+            height: 6vh;
+            margin-left: 3vw;
+            cursor: pointer;
+        }
+        .ForgottenPassword {
+            text-decoration: none; 
+            padding:8.5vw;
+        }
+        .SignUp {
+            color: black;
+            text-align: center;
+            font-size: 20px;
+        }
+        hr {
+            margin-right: 1vw;
+            margin-left: 1vw;
+            margin-top: 3vh;
+            margin-bottom: 3vh;
+        }
+        body {
+            background-image: url({% static 'personal_nav/Background.jpeg' %});
+            background-repeat: no-repeat;
+            background-attachment: fixed;  
+            background-size: cover;
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+
+<body style="background-color: whitesmoke;">
+    <div class="flex-container">
+        <div>
+            <img src="{% static 'personal_nav/BVCOE.png' %}" style="height: 27vw; margin-top: 20vh; margin-left: 8vw">
+        </div>
+        
+        <div class="div"> 
+            <img src="{% static 'personal_nav/DivTopImg.jpg' %}" style="width: 28.5vw; height: 17vh; margin-left: -0.04vw;margin-top: -0.05vh;">
+
+            <form method="post" action="/signIn/">
+            {% csrf_token %}
+                <br>
+                <input type="text" name="rollNo" placeholder=" Roll No." required>
+                <br><br>
+                
+                <input type="password" name="password" placeholder=" Password" required>
+
+                <input class="login" type="submit" value=" Log In">
+            </form>
+
+            <h5> <hr> </h5>
+            <h5 style="margin-top: 10px; margin-left: 66px; font-size: 17px"> Don't have an account? <a href="/signUp/" style="text-decoration: none;"> Sign up </a> </h5>            
+                        
+        </div>
+    </div>
+</body>
+
+</html>

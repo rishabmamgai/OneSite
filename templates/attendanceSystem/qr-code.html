@@ -1,0 +1,24 @@
+{% extends 'basic.html' %}
+
+{% load static %}
+
+
+{% block title %} QR Code {% endblock title %}
+
+{% block body %}
+
+<style>
+    .img-container {
+        text-align: center;
+    }
+</style>
+
+<body>
+    {% with '/attendanceSystem/'|add:request.user.username|add:'.png' as image %}
+        <div class="img-container"> 
+                <img src="{% static image %}" alt="{{ request.user.username }}" class="center">
+        </div>
+    {% endwith %}
+</body>
+
+{% endblock body %}

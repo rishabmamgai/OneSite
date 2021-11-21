@@ -1,0 +1,45 @@
+{% extends 'basic.html' %}
+
+{% load static %}
+
+{% block title %} Students Corner {% endblock title %}
+
+{% block body %}
+
+<style>
+    .card {
+        margin: 0 auto;
+        float: none;
+        margin-top: 10px
+        margin-bottom: 10px;
+        width: 15rem; 
+        height: 19rem;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="card">
+            <img class="card-img-top" src={% static 'personal_nav/students_side.png' %} alt="Card image cap">
+            <div class="card-body" align="center">
+                <h5> <a href="/attendanceSystem/{{ request.user.username }}"> Show Attendance </a> </h5>
+            </div>
+        </div>
+
+        <div class="card">
+            <img class="card-img-top" src={% static 'personal_nav/attend.png' %} alt="Card image cap">
+            <div class="card-body" align="center">
+                <h5> <a href="/attendanceSystem/generateQRCode/"> Mark Attendance </a> </h5>
+            </div>
+        </div>
+
+        <div class="card">
+            <img class="card-img-top" src={% static 'personal_nav/marks.png' %} alt="Card image cap">
+            <div class="card-body" align="center">
+                <h5> <a href="/marksApp/marks/{{ request.user.username }}/"> Show Results </a> </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

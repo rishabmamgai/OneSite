@@ -1,0 +1,33 @@
+{% extends 'basic.html' %}
+
+{% block title %} Professors Corner {% endblock title %}
+
+{% block style %}
+    table, th, td {
+        border: 0px solid black;
+    }
+{% endblock style %}
+
+{% block body %}
+    
+    <div class="container my-2">
+        <table style="width:100%">
+
+        {% for student in students %}
+            <tr>
+            <td>
+                <a href="/marksApp/marks/{{ student.user.username }}/" class="btn btn-light btn-lg btn-block">
+                    <div class="row">
+                        <div class="col"> {{ student.user.username }} </div>
+                        <div class="col"> {{ student.user.get_full_name }} </div>
+                        <div class="col"> {{ student.branch }} </div>
+                    </div>
+                </a>
+            </td>
+            </tr>
+        {% endfor %}
+
+        </table>
+    </div>
+
+{% endblock body %}

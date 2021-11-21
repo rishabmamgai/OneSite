@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <style>
+            .create-group-modal {
+                margin-left: 10px;
+                margin-top: 8px;
+                cursor: pointer;
+            }
+            
+            .create-group-modal-disabled {
+                margin-left: 10px;
+                margin-top: 8px;
+                cursor: pointer;
+                pointer-events: none;
+                opacity: 0.6;
+            }
+
+            .create {
+                border-style: solid;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Button trigger modal -->
+        {% if request.user.is_superuser %}
+            <div class="create-group-modal" data-toggle="modal" data-target="#exampleModalCenter"> Create Group </div>
+        {% else %}
+            <div class="create-group-modal-disabled" data-toggle="modal" data-target="#exampleModalCenter"> Create Group </div>
+        {% endif %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Create Group </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/communicationSystem/createGroup/" id="form" method="post">
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Group Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Branch">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Batch eg-2019">
+                        </div>
+                        <button class="create"> Create </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,107 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> BVCOE </title>
+    <link rel="icon" type="image/png" href={% static 'personal_nav/Favicon.png' %}>
+    
+    <style>
+        .flex-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .div {
+            border: 10px solid rgb(240, 66, 2);
+            border-radius: 10px;
+            background-color:rgba(226, 226, 226, 0);
+            height: 67vh;
+            width: 30vw;
+            margin-top: 13vh;
+            margin-right: 10vw;
+        }
+        form {
+            padding-left: 2vw;
+            padding-top: 1vw;
+        }
+        input {
+            border-radius: 5px;
+            width: 25vw;
+            height: 5vh;
+            border-color: rgb(197, 184, 184);
+        }
+        .login {
+            background-color: #199600; 
+            color: white; 
+            font-size: 1.2rem;
+            width: 20vw;
+            border-radius: 5px; 
+            margin-top: 2vh;
+            height: 7vh;
+            margin-left: 3vw;
+            cursor: pointer;
+        }
+        .ForgottenPassword {
+            text-decoration: none; 
+            padding:8.5vw;
+        }
+        .SignUp {
+            color: black;
+            text-align: center;
+            font-size: 20px;
+        }
+        hr {
+            margin-right: 2.5vw;
+            margin-top: 3vh;
+            margin-bottom: 3vh;
+        }
+        body {
+            background-image: url({% static 'personal_nav/Background.jpeg' %});
+            background-repeat: no-repeat;
+            background-attachment: fixed;  
+            background-size: cover;
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+
+<body style="background-color: whitesmoke;">
+    <div class="flex-container">
+        <div>
+            <img src="{% static 'personal_nav/BVCOE.png' %}" style="height: 27vw; margin-top: 19vh; margin-left: 8vw">
+        </div>
+        
+        <div class="div"> 
+            <form method="post" action="/signUp/">
+            {% csrf_token %}
+                <br>
+                <input type="email" name="bvpId" placeholder=" BVP ID" required>
+                <br><br>
+
+                <input type="text" name="rollNo" placeholder=" Roll No." required>
+                <br><br>
+
+                <input type="text" name="fName" placeholder=" First Name" required>
+                <br><br>
+
+                <input type="text" name="lName" placeholder=" Last Name" required>
+                <br><br>
+
+                <input type="text" name="password" placeholder=" Password" required>
+                <br><br>
+
+                <input type="password" name="confirmPass" placeholder=" Confirm Password" required>
+
+                <input  class="login" type="submit" value=" Sign Up" >
+            </form>               
+        </div>
+    </div>
+</body>
+
+</html>

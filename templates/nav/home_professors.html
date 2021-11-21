@@ -1,0 +1,120 @@
+{% extends 'basic.html' %}
+{% load project_dir_template_tags %}
+{% load static %}
+
+{% block title %} Professors Corner {% endblock title %}
+
+{% block style %}
+    .type-1 {
+        margin: 0 auto;
+        float: none;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 15rem;
+        height: 19rem;
+    }
+
+    .type-2 {
+        margin: 0 auto;
+        float: none;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        height: 13rem;
+        width: 17rem;
+    }
+
+    .card-body {
+      height: 62px;
+      background: lavender;
+    }
+
+    .container-search {
+      border: black solid; 
+      margin-top: 10px; 
+      font-family: 'Josefin Sans', 
+      sans-serif; 
+      border-radius: 10px; 
+      display: inline-block;
+      width: 350px; 
+      background-color: rgba(255, 255, 255, 0.452);
+    }
+{% endblock style %}
+
+{% block body %}
+
+  <div class="container my-2">
+    <div class="row">
+
+      <div class="col-8" id="branch">
+        {% for key, values in branches.items %}
+          <div class="row">
+          {% for branch in values|sort %} 
+            
+            <div class="type-1">
+              <img class="card-img-top" src={% static 'personal_nav/professors_side.png' %} alt="Card image cap">
+              <div class="card-body" align="center">
+                <h5> <a href="/home"> {{ branch }} </a> </h5>
+              </div>
+            </div>
+            
+          {% endfor %}
+          </div>
+        {% endfor %}
+      </div>      
+      
+      <div class="col-4">
+        <div class="container-search" style="width: 317px; margin-left: 16px">
+          <form action="/home/search/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group" style="margin-left: 27px">
+              <input class="form-control my-4" type="text" name="year" placeholder="Enrollment Year" style="width: 16rem">
+              <h5 style="margin-left: 9vw; margin-top: -3vh; margin-bottom: -3vh;"> or </h5>
+              <input class="form-control my-4" type="text" name="rollNo" placeholder="Enrollment Number" style="width: 16rem">
+              <button type="submit" class="btn btn-info btn-sm"> Submit </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="type-2">
+          <img class="card-img-top" src={% static 'personal_nav/professors_side.png' %} alt="Card image cap" style="height: 146px; width: 272px">
+          <div class="card-body" align="center">
+            <h5> <a href="/attendanceSystem/attendance/scanner"> Take Attendance </a> </h5>
+          </div>
+        </div>
+
+        <div class="type-2">
+          <img class="card-img-top" src={% static 'personal_nav/upload_results.png' %} alt="Card image cap" style="height: 146px; width: 272px">
+          <div class="card-body" align="center">
+            <h5> <a href="/marksApp/marks/upload/"> Upload Marks </a> </h5>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+<script>
+
+  var search = {{ search }};
+  console.log(search);
+  if(search != false)
+    document.getElementById('branch').innerHTML = "{% for key, values in branches.items %}" +
+                                                      "<div class='row'>" +
+
+                                                      "{% for branch in values|sort %}" +
+
+                                                        "<div class='type-1'>" +
+                                                          "<img class='card-img-top' src={% static 'personal_nav/professors_side.png' %} alt='Card image cap'>" +
+                                                          "<div class='card-body' align='center'>" +
+                                                            "<h5> <a href='/home/{{ search }}/{{ branch }}'> {{ branch }} </a> </h5>" +
+                                                          "</div>" +
+                                                        "</div>" +
+
+                                                      "{% endfor %}" +
+
+                                                      "</div>" +
+                                                    "{% endfor %}";
+
+</script>
+
+{% endblock body %}

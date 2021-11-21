@@ -1,0 +1,154 @@
+{% extends 'basic.html' %}
+
+{% block title %} {{ groupName }} {% endblock title %}
+
+{% block style %}
+  ::-webkit-scrollbar{width: 15px;}
+  ::-webkit-scrollbar-track {box-shadow: inset 0 0 5px grey;}
+  ::-webkit-scrollbar-thumb{background: rgb(255, 255, 255);}
+  ::-webkit-scrollbar-thumb:hover {background: grey;}
+  
+  body {
+    overflow-x: hidden; 
+  }
+
+  .Box1 {
+    padding-top: 1vh;
+    height: 85vh;
+    width: 21vw;
+    overflow: auto; 
+    margin-top: 0vh;
+    margin-left: -1vw;
+  }
+  
+  #Name_Token {
+    text-align: center;
+    height: 7vh;
+    width: 20vw;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-left: 0.25vw;
+  }
+
+  #Name_Token button {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: large;
+    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    height: 8vh;
+    width: 19.5vw;
+    border: none;
+  }
+
+  #Name_Token button:hover {
+    cursor: pointer; 
+    background-color: lightseagreen;
+    text-decoration: underline;
+  }
+
+  .vl {
+    border-left: 2px solid rgb(255, 255, 255);
+    height: 44vw;
+    margin-left: 19.5vw;
+    margin-top: -86.5vh;
+  }
+
+  .Box2 {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: transparent;
+    margin-left: 20vw;
+    margin-top: -95vh;
+  }
+
+  .Box2 > div {
+    background-color: skyblue;
+    width: 38.3vw;
+    margin: 0.5vw;
+    text-align: center;
+    line-height: 75px;
+  }
+  
+  .Button1 {
+    position: initial;
+    height: 75px;
+    width: 38.3vw;
+    margin-top: auto;
+    border: 0px;
+    border-radius: 100px;
+    background-color: skyblue;
+  }
+{% endblock style %}
+
+{% block body %}
+
+  <div class="Box1">
+      {% for user in members %}
+        <div id="Name_Token"><button><p> {{ user }} </p></button></div>
+      {% endfor %}
+  </div>
+
+  <div class="vl">
+    <div class="btn-group dropup" style="margin-top: 38vw; margin-left: 152vh; position: fixed;">
+      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Submissions
+      </button>
+
+      <div class="dropdown-menu" style="width: 16rem; margin-left: -17vh;">
+        {% for sub in submissions %}
+          <div>
+            <row> <a href="/{{ sub.submission }}/" style="margin-left: 1vw;"> {{ sub.assignment.topic }} </a>   {{ sub.submissionDate }} </row>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="Box2", id="assignments">
+      {% for temp in assignments %}
+        <div>
+          <!-- Modal Button -->
+          <button data-target="#modal{{ forloop.counter }}" type="button" class="Button1" data-toggle="modal">
+            {{ temp.topic }}
+          </button>
+    
+          <!-- Modal -->
+          <div id="modal{{ forloop.counter }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <h4 class="modal-title" id="exampleModalLongTitle"> {{ temp.topic }} </h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-body">
+                  {% if temp.dueDate != None  %}
+                    <div style="margin-top: -6vh; text-align: left;"> Due Date : {{ temp.dueDate }} </div>
+                  {% else %}
+                    <div style="margin-top: -6vh; text-align: left;"> Due Date : {{ temp.dueDate }} </div>
+                  {% endif %}
+
+                  <div style="margin-top: -6vh; text-align: left;"> {{ temp.description }} </div>                  
+                </div>
+
+                <div class="modal-footer">                  
+                  <form action="/communicationSystem/group/submission/{{ temp.topic }}/?next={{ request.path }}" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <row>
+                      <input type="file" style="width: 40vh; margin-left: -68vh;" class="form-control" name="assigned_work"/>
+                      <button type="submit" class="btn btn-secondary"> Submit </button>
+                    </row>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+
+{% endblock body %}
