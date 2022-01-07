@@ -1,10 +1,10 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 
 urlpatterns = [
+    path('<int:slug>/', views.show_attendance, name='ShowAttendance'),
+    path('generateQRCode/', views.generate_qr, name="QRCode"),
     path('attendance/scanner/', views.scanner, name='Scanner'),
-    path('<int:slug>/', views.showattendance, name='ShowAttendance'),
-    path('generateQRCode/', views.generate_qr, name="QRCode")
+    path('postResults/', views.scanner_results, name="QRResults")
 ]

@@ -20,14 +20,14 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.signIn, name='Main'),
+    path('', views.sign_in, name='Main'),
     path('home/', views.home_staff, name='HomeStaff'),
     path('home_student/', views.home_student, name='HomeStudent'),
     path('home/search/', views.search, name="Search"),
     path('home/<str:slug1>/<str:slug2>/', views.branch_n_year, name='temp'),
-    path('signIn/', views.signIn, name='signIn'),
-    path('signUp/', views.signUp, name='signUp'),
-    path('signOut/', views.signOut, name='signOut'),
+    path('signIn/', views.sign_in, name='signIn'),
+    path('signUp/', views.sign_up, name='signUp'),
+    path('signOut/', views.sign_out, name='signOut'),
     path('marksApp/', include('myApp.urls')),
     path('attendanceSystem/', include('attendanceSystem.urls')),
     path('communicationSystem/', include('communicationSystem.urls'))

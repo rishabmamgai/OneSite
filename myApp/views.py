@@ -1,9 +1,6 @@
-from django.shortcuts import HttpResponse, render, redirect
-from personal_nav.views import query_groups
-from django.contrib.auth.models import User
-from myApp.templatetags import extras
+from django.shortcuts import render, redirect
+from communicationSystem.views import list_group
 from django.contrib import messages
-from django.urls import reverse
 from . import models as md
 import openpyxl
 import json
@@ -18,19 +15,19 @@ def view_marks(request, slug):
         2. Students are redirected to their home page.
     """
 
+    groups = list_group(request.user)
+
     username = "0"+str(slug) if len(str(slug)) == 10 else "00"+str(slug)
-
     student = md.Profile.objects.filter(user__username=username)
-    groups = query_groups(request.user)
 
-    myArgs = {"student": student, "groups": groups}
+    params = {"student": student, "groups": groups}
 
     sem1 = md.Sem1.objects.filter(roll_no=slug)
 
     if len(sem1) == 0:
         messages.error(request, "Result Not Available")
         if request.user.is_superuser:
-            return render(request, 'myApp/marks.html', myArgs)
+            return render(request, 'myApp/marks.html', params)
         else:
             return redirect("HomeStudent")
 
@@ -42,10 +39,10 @@ def view_marks(request, slug):
     sem7 = md.Sem7.objects.filter(roll_no=slug)
     sem8 = md.Sem8.objects.filter(roll_no=slug)
 
-    myArgs["marks"] = {"Semester-1": sem1, "Semester-2": sem2, "Semester-3": sem3, "Semester-4": sem4,
+    params["marks"] = {"Semester-1": sem1, "Semester-2": sem2, "Semester-3": sem3, "Semester-4": sem4,
                        "Semester-5": sem5, "Semester-6": sem6, "Semester-7": sem7, "Semester-8": sem8}
 
-    return render(request, 'myApp/marks.html', myArgs)
+    return render(request, 'myApp/marks.html', params)
 
 
 def upload_marks(request):
@@ -53,12 +50,12 @@ def upload_marks(request):
         Takes results in excel file and populates the data tables with the marks of respective students.
     """
 
-    groups = query_groups(request.user)
-    myArgs = {"groups": groups}
+    groups = list_group(request.user)
+    params = {"groups": groups}
 
     if request.method == "POST":
         sem = request.POST.get("sem")
-        file = request.FILES['excelfile']
+        file = request.FILES['excelFile']
         mid_term = request.POST.get("midTerm", "off")
         end_term = request.POST.get("endTerm", "off")
         practicals = request.POST.get("practicals", "off")
@@ -90,7 +87,7 @@ def upload_marks(request):
         messages.success(request, "Marks Uploaded Successfully")
         return redirect("UploadMarks")
 
-    return render(request, 'myApp/upload.html', myArgs)
+    return render(request, 'myApp/upload.html', params)
 
 
 # Utility functions
@@ -148,7 +145,6 @@ def save_data(marks_dict, sem, mid_term, end_sem, practicals, roll):
             obj.practicals = marks_dict
             obj.save()
 
-
     elif sem == "Sem2":
         if mid_term == "on":
             obj = md.Sem2(roll_no=roll, mid_sem=marks_dict)
@@ -163,7 +159,6 @@ def save_data(marks_dict, sem, mid_term, end_sem, practicals, roll):
             obj = md.Sem2.objects.get(roll_no=roll)
             obj.practicals = marks_dict
             obj.save()
-
 
     elif sem == "Sem3":
         if mid_term == "on":
@@ -180,7 +175,6 @@ def save_data(marks_dict, sem, mid_term, end_sem, practicals, roll):
             obj.practicals = marks_dict
             obj.save()
 
-
     elif sem == "Sem4":
         if mid_term == "on":
             obj = md.Sem4(roll_no=roll, mid_sem=marks_dict)
@@ -195,7 +189,6 @@ def save_data(marks_dict, sem, mid_term, end_sem, practicals, roll):
             obj = md.Sem4.objects.get(roll_no=roll)
             obj.practicals = marks_dict
             obj.save()
-
 
     elif sem == "Sem5":
         if mid_term == "on":
@@ -212,7 +205,6 @@ def save_data(marks_dict, sem, mid_term, end_sem, practicals, roll):
             obj.practicals = marks_dict
             obj.save()
 
-
     elif sem == "Sem6":
         if mid_term == "on":
             obj = md.Sem6(roll_no=roll, mid_sem=marks_dict)
@@ -227,7 +219,6 @@ def save_data(marks_dict, sem, mid_term, end_sem, practicals, roll):
             obj = md.Sem6.objects.get(roll_no=roll)
             obj.practicals = marks_dict
             obj.save()
-
     
     elif sem == "Sem7":
         if mid_term == "on":
@@ -243,7 +234,6 @@ def save_data(marks_dict, sem, mid_term, end_sem, practicals, roll):
             obj = md.Sem7.objects.get(roll_no=roll)
             obj.practicals = marks_dict
             obj.save()
-
 
     elif sem == "Sem8":
         if mid_term == "on":

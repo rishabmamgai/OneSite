@@ -24,19 +24,19 @@
     }
 
     .card-body {
-      height: 62px;
-      background: lavender;
+        height: 62px;
+        background: lavender;
     }
 
     .container-search {
-      border: black solid; 
-      margin-top: 10px; 
-      font-family: 'Josefin Sans', 
-      sans-serif; 
-      border-radius: 10px; 
-      display: inline-block;
-      width: 350px; 
-      background-color: rgba(255, 255, 255, 0.452);
+        border: black solid; 
+        margin-top: 10px; 
+        font-family: 'Josefin Sans', 
+        sans-serif; 
+        border-radius: 10px; 
+        display: inline-block;
+        width: 350px; 
+        background-color: rgba(255, 255, 255, 0.452);
     }
 {% endblock style %}
 
@@ -93,28 +93,29 @@
     </div>
   </div>
 
-<script>
 
-  var search = {{ search }};
-  console.log(search);
-  if(search != false)
-    document.getElementById('branch').innerHTML = "{% for key, values in branches.items %}" +
-                                                      "<div class='row'>" +
+  <script>
 
-                                                      "{% for branch in values|sort %}" +
+    var search = {{ search }};
+    console.log(search);
+    if(search != false)
+      document.getElementById('branch').innerHTML = "{% for key, values in branches.items %}" +
+                                                        "<div class='row'>" +
 
-                                                        "<div class='type-1'>" +
-                                                          "<img class='card-img-top' src={% static 'personal_nav/professors_side.png' %} alt='Card image cap'>" +
-                                                          "<div class='card-body' align='center'>" +
-                                                            "<h5> <a href='/home/{{ search }}/{{ branch }}'> {{ branch }} </a> </h5>" +
+                                                        "{% for branch in values|sort %}" +
+
+                                                          "<div class='type-1'>" +
+                                                            "<img class='card-img-top' src={% static 'personal_nav/professors_side.png' %} alt='Card image cap'>" +
+                                                            "<div class='card-body' align='center'>" +
+                                                              "<h5> <a href='/home/{{ search }}/{{ branch }}'> {{ branch }} </a> </h5>" +
+                                                            "</div>" +
                                                           "</div>" +
+
+                                                        "{% endfor %}" +
+
                                                         "</div>" +
+                                                      "{% endfor %}";
 
-                                                      "{% endfor %}" +
-
-                                                      "</div>" +
-                                                    "{% endfor %}";
-
-</script>
+  </script>
 
 {% endblock body %}

@@ -1,0 +1,67 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+{% block title %} QR Code Scanner {% endblock title %}
+
+{% block style %}
+    #reader {
+        width: 500px;  
+        margin-left: 66vh;
+        margin-top: 3vh;
+        background: antiquewhite;
+    }
+
+    #qrCodeForm {
+        margin-left: 102vh;
+        margin-top: 2vh;
+    }
+{% endblock style %}
+
+
+{% block body %}
+
+    <script src="{% static '\attendanceSystem\html5-qrcode.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <div id="reader"></div>
+
+    <form id="qrCodeForm" method="GET">
+        <input type="submit" class="btn btn-success btn-lg">
+    </form>
+
+
+    <script>
+        attendes = []
+        
+        var html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+            
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Scan result: ${decodedText}`, decodedResult);
+
+            attendes.push(decodedText);
+        }
+
+        html5QrcodeScanner.render(onScanSuccess);
+        
+        $('#qrCodeForm').submit(function() {
+            $.ajax({
+                url: "{% url 'QRResults' %}",
+                type: "GET",
+                data: {"results": JSON.stringify(attendes)},
+                dataType: "json",
+                success: function(response){
+                    var no_of_students = JSON.parse(response["students"]);
+                    var status = JSON.parse(response["status"]);
+
+                    console.log(no_of_students);
+                    console.log(status);
+
+                    if(status == 200)
+                        location.href = {% url 'HomeStaff' %};
+                },
+                error: function (xhr, textStatus, thrownError){}
+            });
+        });
+    </script>
+
+{% endblock body %}

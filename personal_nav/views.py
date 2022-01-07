@@ -1,8 +1,7 @@
 from django.contrib.auth import authenticate, logout, login
 from django.shortcuts import HttpResponse, render, redirect
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from communicationSystem.views import list_group
-from personal_nav.templatetags import extras1
 from django.contrib import messages
 from myApp.models import Profile
 import re
@@ -10,56 +9,55 @@ import re
 
 def home_student(request):
     groups = list_group(request.user)
-    params = {"groups": groups}
 
+    params = {"groups": groups}
     return render(request, 'nav/home_students.html', params)
 
 
 def home_staff(request):
+    groups = list_group(request.user)
+
     messages.add_message(request, messages.INFO, "Search for enrollment year to query results.")
+
     branches = Profile.objects.values("branch").distinct()
     branches_dict = get_branches(branches)
 
-    groups = query_groups(request.user)
     params = {"search": "false", "branches": branches_dict, "groups": groups}
-
     return render(request, 'nav/home_professors.html', params)
 
 
 def search(request):
     if request.method == "POST":
         year = request.POST.get("year")
-        rollNo = request.POST.get("rollNo")
+        roll_no = request.POST.get("rollNo")
 
         if len(year) != 0:
-            print(1)
             year = year + " - " + str(int(year) + 4)
 
             branches = Profile.objects.filter(batch=year).values("branch").distinct()
             branches_dict = get_branches(branches)
 
-            groups = query_groups(request.user)
+            groups = list_group(request.user)
 
             params = {"search": year, "branches": branches_dict, "groups": groups}
-
             return render(request, "nav/home_professors.html", params)
 
-        elif len(rollNo) != 0:
-            return redirect('showTable', slug=str(rollNo))
+        elif len(roll_no) != 0:
+            return redirect('showTable', slug=str(roll_no))
 
     return HttpResponse("404")
 
 
 def branch_n_year(request, slug1, slug2):
+    groups = list_group(request.user)
+
     students = Profile.objects.filter(batch=slug1, branch=slug2).order_by('user__username')
 
-    groups = query_groups(request.user)
-    myArgs = {"students": students, "groups": groups}
-
-    return render(request, 'myApp/adminSide.html', myArgs)
+    params = {"students": students, "groups": groups}
+    return render(request, 'myApp/adminSide.html', params)
 
 
-def signIn(request):
+def sign_in(request):
     if request.method == "POST":
         username = request.POST.get("rollNo")
         password = request.POST.get("password")
@@ -80,27 +78,27 @@ def signIn(request):
     return render(request, 'nav/signIn.html')
 
 
-def signUp(request):
+def sign_up(request):
     if request.method == "POST":
-        BVPid = request.POST.get("bvpId")
+        bvp_id = request.POST.get("bvpId")
         username = request.POST.get("rollNo")
-        fname = request.POST.get("fName")
-        lname = request.POST.get("lName")
+        first_name = request.POST.get("fName")
+        last_name = request.POST.get("lName")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirmPass")
 
-        if BVPid == None or username == None or fname == None or lname == None or password == None or confirm_password == None:
+        if bvp_id is None or username is None or first_name is None or last_name is None or password is None or confirm_password is None:
             return HttpResponse("Error")
 
-        if not re.search('bvp.edu.in', BVPid):
+        if not re.search('bvp.edu.in', bvp_id):
             return HttpResponse("Error")
 
         if password != confirm_password:
             return HttpResponse("Error")
 
-        user = User.objects.create_user(username, BVPid, password)
-        user.first_name = fname.capitalize()
-        user.last_name = lname.capitalize()
+        user = User.objects.create_user(username, bvp_id, password)
+        user.first_name = first_name.capitalize()
+        user.last_name = last_name.capitalize()
         user.save()
 
         return redirect('signIn')
@@ -108,22 +106,13 @@ def signUp(request):
     return render(request, 'nav/signUp.html')
 
 
-def signOut(request):
+def sign_out(request):
     logout(request)
 
     return redirect('Main')
 
 
 # Utility functions
-
-def query_groups(user):
-    """
-        Queries groups in which user is a member
-    """
-
-    groups = list_group(user)
-    return groups
-
 
 def get_branches(branches):
     branches_dict = {"CSE": [], "IT": [], "ECE": [], "EEE": []}
