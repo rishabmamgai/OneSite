@@ -43,7 +43,7 @@ def search(request):
             return render(request, "nav/home_professors.html", params)
 
         elif len(roll_no) != 0:
-            return redirect('showTable', slug=str(roll_no))
+            return redirect('ShowTable', slug=str(roll_no))
 
     return HttpResponse("404")
 
@@ -66,7 +66,7 @@ def sign_in(request):
 
         if user is None:
             messages.error(request, "Invalid Username or Password")
-            return redirect("signIn")
+            return redirect("SignIn")
 
         login(request, user)
 
@@ -101,7 +101,7 @@ def sign_up(request):
         user.last_name = last_name.capitalize()
         user.save()
 
-        return redirect('signIn')
+        return redirect('SignIn')
 
     return render(request, 'nav/signUp.html')
 

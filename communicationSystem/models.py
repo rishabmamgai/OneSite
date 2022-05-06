@@ -1,5 +1,6 @@
+from django.contrib.auth.models import Group
 from django.db import models
-from django.contrib.auth.models import Group, User
+import os
 
 
 class Assignment(models.Model):
@@ -15,3 +16,6 @@ class Submission(models.Model):
     submittedBy = models.CharField(max_length=11)
     submission = models.FileField(upload_to='communicationSystem/assignmentsSubmitted', blank=False)
     submissionDate = models.DateTimeField(auto_now=True)
+
+    def filename(self):
+        return os.path.basename(self.submission.name)

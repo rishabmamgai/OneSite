@@ -3,152 +3,146 @@
 {% block title %} {{ groupName }} {% endblock title %}
 
 {% block style %}
-  ::-webkit-scrollbar{width: 15px;}
-  ::-webkit-scrollbar-track {box-shadow: inset 0 0 5px grey;}
-  ::-webkit-scrollbar-thumb{background: rgb(255, 255, 255);}
-  ::-webkit-scrollbar-thumb:hover {background: grey;}
-  
-  body {
-    overflow-x: hidden; 
-  }
+    #tab {
+        width: 76vw;
+        height: 10vh;
+        margin-left: 5vw;
+        margin-top: 3vh;
+    }
 
-  .Box1 {
-    padding-top: 1vh;
-    height: 85vh;
-    width: 21vw;
-    overflow: auto; 
-    margin-top: 0vh;
-    margin-left: -1vw;
-  }
-  
-  #Name_Token {
-    text-align: center;
-    height: 7vh;
-    width: 20vw;
-    margin-top: 1vh;
-    margin-bottom: 1vh;
-    margin-left: 0.25vw;
-  }
+    #form-fields {
+        width: 70vw;
+        margin-left: 6vh;
+        margin-bottom: 3vh;
+    }
 
-  #Name_Token button {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: large;
-    background-color: rgba(255, 255, 255, 0);
-    color: white;
-    height: 8vh;
-    width: 19.5vw;
-    border: none;
-  }
+    #container {
+        margin-top: 7vh;
+        margin-bottom: 7vh;
+    }
 
-  #Name_Token button:hover {
-    cursor: pointer; 
-    background-color: lightseagreen;
-    text-decoration: underline;
-  }
+    #viewSub {
+        color: green;
+        margin-top: 9px;
+        margin-left: 54vw;
+    }
 
-  .vl {
-    border-left: 2px solid rgb(255, 255, 255);
-    height: 44vw;
-    margin-left: 19.5vw;
-    margin-top: -86.5vh;
-  }
-
-  .Box2 {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: transparent;
-    margin-left: 20vw;
-    margin-top: -95vh;
-  }
-
-  .Box2 > div {
-    background-color: skyblue;
-    width: 38.3vw;
-    margin: 0.5vw;
-    text-align: center;
-    line-height: 75px;
-  }
-  
-  .Button1 {
-    position: initial;
-    height: 75px;
-    width: 38.3vw;
-    margin-top: auto;
-    border: 0px;
-    border-radius: 100px;
-    background-color: skyblue;
-  }
+    .disabled {
+        pointer-events: none;
+        opacity: 0.6;
+    }
 {% endblock style %}
 
 {% block body %}
 
-  <div class="Box1">
-      {% for user in members %}
-        <div id="Name_Token"><button><p> {{ user }} </p></button></div>
-      {% endfor %}
-  </div>
+<div class="container" id="container">
+    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
 
-  <div class="vl">
-    <div class="btn-group dropup" style="margin-top: 38vw; margin-left: 152vh; position: fixed;">
-      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Submissions
-      </button>
+        <li class="nav-item" style="background-color: azure">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"> ClassWork </a>
+        </li>
+        <li class="nav-item" style="background-color: azure">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"> People </a>
+        </li>
+        <li class="nav-item" style="background-color: azure">
+            <a class="{% if user.is_superuser %} nav-link {% else %} nav-link disabled {% endif %}" id="create-tab" data-toggle="tab" href="#create" role="tab" aria-controls="create" aria-selected="false"> Create </a>
+        </li>
 
-      <div class="dropdown-menu" style="width: 16rem; margin-left: -17vh;">
-        {% for sub in submissions %}
-          <div>
-            <row> <a href="/{{ sub.submission }}/" style="margin-left: 1vw;"> {{ sub.assignment.topic }} </a>   {{ sub.submissionDate }} </row>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
+    </ul>
 
-  <div class="Box2", id="assignments">
-      {% for temp in assignments %}
-        <div>
-          <!-- Modal Button -->
-          <button data-target="#modal{{ forloop.counter }}" type="button" class="Button1" data-toggle="modal">
-            {{ temp.topic }}
-          </button>
-    
-          <!-- Modal -->
-          <div id="modal{{ forloop.counter }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
+    <div class="tab-content" id="myTabContent">
 
-                <div class="modal-header">
-                  <h4 class="modal-title" id="exampleModalLongTitle"> {{ temp.topic }} </h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div id="tab" class="list-group">
+
+                <div id="accordion">
+                    {% for assignment in assignments %}
+                        <div class="card" style="{% if forloop.last %} margin-bottom: 8vh {% endif %}">
+                            <div class="card-header" id="heading{{ forloop.counter }}" style="background-color: azure;">
+                                <h5 class="mb-0">
+
+                                    <div class="row">
+                                        <button class="btn btn-link" style="margin-left: 2vw" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+                                            {{ assignment.assign.topic }}
+                                        </button>
+                                        
+                                        {% if assignment.sub != "not submitted" %}
+                                            <a href="/communicationSystem/assignmentsSubmitted/{{ assignment.sub.id }}"> <h6 id="viewSub"> view submission </h6> </a>
+                                        {% endif %}
+
+                                        {% if user.is_superuser %}
+                                            <a href="assignment/{{ assignment.assign.topic }}"> <h6 id="viewSub"> view submissions </h6> </a>
+                                        {% endif %}
+                                    </div>
+
+                                </h5>
+                            </div>
+                    
+                            <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row" style="margin-left: 0vh"> <h6> Due On : </h6> <p style="margin-left: 4px; margin-top: -2px"> {{ assignment.assign.dueDate }} </p> </div>
+
+                                    <p> {{ assignment.assign.description }} </p>
+                                    {% if user.is_superuser %}
+                                    {% else %}
+                                        <form method="post" action="submission/{{ assignment.assign.topic }}" enctype="multipart/form-data">
+                                            {% csrf_token %}
+
+                                            <input type="file" name="assignFile">
+                                            <button class="btn btn-primary" type="submit"> Upload </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
 
-                <div class="modal-body">
-                  {% if temp.dueDate != None  %}
-                    <div style="margin-top: -6vh; text-align: left;"> Due Date : {{ temp.dueDate }} </div>
-                  {% else %}
-                    <div style="margin-top: -6vh; text-align: left;"> Due Date : {{ temp.dueDate }} </div>
-                  {% endif %}
-
-                  <div style="margin-top: -6vh; text-align: left;"> {{ temp.description }} </div>                  
-                </div>
-
-                <div class="modal-footer">                  
-                  <form action="/communicationSystem/group/submission/{{ temp.topic }}/?next={{ request.path }}" method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-                    <row>
-                      <input type="file" style="width: 40vh; margin-left: -68vh;" class="form-control" name="assigned_work"/>
-                      <button type="submit" class="btn btn-secondary"> Submit </button>
-                    </row>
-                  </form>
-                </div>
-
-              </div>
             </div>
-          </div>
         </div>
-      {% endfor %}
-  </div>
+
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div id="tab" class="list-group">
+
+                {% for user in members %}
+                    <button type="button" class="list-group-item list-group-item-action" style="background-color: azure; {% if forloop.last %} margin-bottom: 8vh {% endif %}">
+                        {{ user }}
+                    </button>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="create" role="tabpanel" aria-labelledby="create-tab">
+            <div id="tab" class="list-group">
+
+                <form action="createAssign" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-group" id="form-fields">
+                        <label for="topic"> Topic </label>
+                        <input name="topic" type="text" class="form-control" id="topic">
+                    </div>
+                    <div class="form-group" id="form-fields">
+                        <label for="dueDate"> Due Date </label>
+                        <input name="dueDate" type="date" class="form-control" id="dueDate">
+                    </div>
+                    <div class="form-group" id="form-fields">
+                        <label for="description"> Description </label>
+                        <textarea name="description" class="form-control" id="description" rows="2"></textarea>
+                    </div>
+                    <div class="form-group" id="form-fields">
+                        <label for="upload"> Upload </label>
+                        <input name="file" type="file" class="form-control" id="upload">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="form-fields"> Post </button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
 
 {% endblock body %}

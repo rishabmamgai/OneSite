@@ -7,15 +7,28 @@
 {% block style %} 
     .img-container {
         text-align: center;
+        width: 25vw;
+        margin-left: 27vw;
+        margin-top: 2vw;
     }
 {% endblock style %}
 
 {% block body %}
 
-    {% with '/attendanceSystem/'|add:request.user.username|add:'.png' as image %}
-        <div class="img-container"> 
-                <img src="{% static image %}" alt="{{ request.user.username }}" class="center">
+    <div class="row">
+        {% with '/attendanceSystem/'|add:request.user.username|add:'.png' as image %}
+            <div class="img-container"> 
+                <img src="{% static image %}" alt="{{ request.user.username }}" class="center" style="width: 25vw; margin-top: 5vw">
+            </div>
+        {% endwith %}
+
+        <div style="margin-top: 9vw; margin-left: 7vh;">
+            <h6> {{ studentName }} </h6>
+            <h6> {{ request.user.username }} </h6>
+            <h6> {{ date }} </h6>
+
+            <h5 style="margin-top: 6vh"> Scan QR Code for attendance! </h5>
         </div>
-    {% endwith %}
+    </div>
 
 {% endblock body %}

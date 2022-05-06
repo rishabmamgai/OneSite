@@ -1,0 +1,75 @@
+{% extends 'basic.html' %}
+
+{% block title %} Submissions {% endblock title %}
+
+{% block style %}
+    .submitted {
+        margin-top: 7vh;
+    }
+
+    .unsubmitted {
+        margin-top: 7vh;
+    }
+
+    #container {
+        width: 170vh;
+    }
+
+    #card {
+        width: 24vh;
+        height: 11vh;
+        background-color: azure
+    }
+{% endblock style %}
+
+{% block body %}
+
+<div class="container" id="container">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="submitted">
+                <h6 style="margin-bottom: 20px"> Submitted by {{ count_submitted }} student </h6>
+                <div class="row" style="margin-left: -1px">
+
+                {% for submission in submissions %}
+                    <div class="card" id="card">
+                        <div class="card-body">
+                            <a href="/communicationSystem/assignmentsSubmitted/{{ submission.id }}"> <p class="card-title"> {{ submission.submittedBy }} </p> </a>
+                        </div>
+                    </div>
+
+                    {% if forloop.counter|divisibleby:"3" %}
+                        </div>
+                        <div class="row" style="margin-left: -1px">
+                    {% endif %}
+                {% endfor %}
+                        </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="unsubmitted">
+                <h6 style="margin-bottom: 20px"> Not Submitted by {{ count_not_submitted }} student </h6>
+                <div class="row" style="margin-left: -1px">
+
+                {% for noSubmission in not_submitted %}
+                    <div class="card" id="card">
+                        <div class="card-body">
+                            <p class="card-title"> {{ noSubmission }} </p>
+                        </div>
+                    </div>
+
+                    {% if forloop.counter|divisibleby:"3" %}
+                        </div>
+                        <div class="row" style="margin-left: -1px">
+                    {% endif %}
+                {% endfor %}
+                    </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock body %}

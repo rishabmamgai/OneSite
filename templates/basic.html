@@ -24,10 +24,14 @@
     </head>
 
     <style>
-        body {
-            background-image: url({% static 'personal_nav/Background.jpeg' %}); 
+        #body {
+            {% if request.resolver_match.view_name != 'GetGroup' and request.resolver_match.view_name != 'Submissions' and request.resolver_match.view_name != 'ShowAttendance' and request.resolver_match.view_name != 'QRCode' and request.resolver_match.view_name != 'Scanner' %}
+                background-image: url({% static 'personal_nav/Background.jpeg' %});
+            {% endif %}
+
+            background-color: lavender;
             background-repeat: no-repeat;
-            background-attachment: fixed;  
+            background-attachment: fixed;
             background-size: cover;
             background-size: 100% 100%;
         }
@@ -35,7 +39,7 @@
         {% block style %} {% endblock style %}
     </style>
 
-    <body>
+    <body id="body">
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd">
             <a class="navbar-brand" href="#"> BVCOE </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +80,6 @@
 
                         <a class="dropdown-item" href="#"> Profile </a>
                         <a class="dropdown-item" href="https://login.microsoftonline.com/common/oauth2/authorize?client_id=00000002-0000-0ff1-ce00-000000000000&redirect_uri=https%3a%2f%2foutlook.office365.com%2fowa%2f&resource=00000002-0000-0ff1-ce00-000000000000&response_mode=form_post&response_type=code+id_token&scope=openid&msafed=0&client-request-id=76fa8fb2-bd7f-44d7-92d9-d23285a03606&protectedtoken=true&claims=%7b%22id_token%22%3a%7b%22xms_cc%22%3a%7b%22values%22%3a%5b%22CP1%22%5d%7d%7d%7d&nonce=637565986725897502.570c33ac-6906-408e-8696-edc93375bade&state=DYu9DoIwFEaLvotbpbT2tncgDibKAA6I0bD1b4BIIEAwvr0dzrec7ySEkH1kF0lYHKJAKAkSNSguNSrJ-FEq5oQwjgIyoCemA9WAQIN3KOLdGh-S2D7T8WvS87KaNeTZYQ6-m4NbmzE3Rc1cUUH5w82_68VynMsBh3b49G1T8ftD9pazzb6uk71g9H6ynRz9LVv-"> Check Mails </a>
-                        <a class="dropdown-item" href="/communicationSystem/AddUser"> Create Group </a>
 
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/signOut/"> Sign Out </a>
@@ -97,5 +100,4 @@
         {% block body %}  {% endblock body %}
 
     </body>
-
 </html>
